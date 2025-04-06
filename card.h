@@ -4,6 +4,28 @@
 class Card
 {
 public:
+    Card(unsigned int id);
+
+    unsigned int GetID();
+
+    bool IsBlicked();
+    void Block();
+    void Unlock();
+
+    void GetBalance();
+    // value - значение которое будет прибавлено к балансу.
+    // Если положительное - баланс будет увеличен.
+    // Если отрицательное - баланс будет уменьшен.
+    void UpdateBalance(double value);
+
+private:
+    unsigned int m_id;
+    double m_balance;
+    bool m_isLoced;
+
+    // ВАЖНО!
+    // Заблокирована возможность использовать конструктор поумолчанию!
+    // Банк обязан контролировать ID создаваемых карт, что бы не создать 2 одинаковые.
     Card();
 };
 
