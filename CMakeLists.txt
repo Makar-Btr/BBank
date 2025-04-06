@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core)
 add_executable(BBank
   main.cpp
   card.h card.cpp
+  bank.h bank.cpp
   client.h client.cpp
 )
 target_link_libraries(BBank Qt${QT_VERSION_MAJOR}::Core)

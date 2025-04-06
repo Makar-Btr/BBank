@@ -16,7 +16,7 @@ public:
     // value - значение которое будет прибавлено к балансу.
     // Если положительное - баланс будет увеличен.
     // Если отрицательное - баланс будет уменьшен.
-    void UpdateBalance(double value);
+    void UpdateBalance(const double& value);
 
 private:
     unsigned int m_id;
