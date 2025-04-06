@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QList>
+#include <QMap>
 
 #include "card.h"
 #include "client.h"
@@ -12,17 +13,17 @@ class Bank
 public:
     Bank();
 
-    void AddClient();
-    void RemoveClient();
-    QString GetClientInfo(QString fio);
+    void AddClient(const QString &fio);
+    void RemoveClient(const QString &fio);
+    QString GetClientInfo(const QString &fio);
 
-    void AddCard(QString fio);
-    void RemoveCard(QString fio, unsigned int cardId);
-    void BlockCard(QString fio, unsigned int cardId);
+    void AddCard(const QString &fio);
+    void RemoveCard(const QString &fio, const unsigned int& cardId);
+    void BlockCard(const QString &fio, const unsigned int& cardId);
 
 private:
-    QList<Client> m_clients;
-    QList<Card> m_cards;
+    QMap<QString, Client> m_clients;
+    QMap<unsigned int, Card> m_cards;
 };
 
 #endif // BANK_H

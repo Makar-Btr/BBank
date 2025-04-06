@@ -3,19 +3,24 @@
 
 #include <QString>
 #include <QMap>
+#include <QList>
 
 #include "card.h"
 
 class Client
 {
 public:
-    Client(QString fio,
-           std::function<Card*(QString)>& addNewCard,
-           std::function<void(QString, unsigned int)>& removeCard);
+    Client(const QString& fio,
+           const std::function<void(QString)> addNewCard,
+           const std::function<void(QString, unsigned int)> removeCard);
+    Client(const Client& X);
+    Client& operator= (const Client& X);
 
     void AddNewCard();
+    void AddNewCard(Card *card);
     void DeleteCard(const unsigned int& id);
 
+    QList<unsigned int> GetCardIds();
     double GetCardBalance(const unsigned int& id);
     void UseCard(const unsigned int& id, const double& value);
 
@@ -27,7 +32,7 @@ private:
     QString m_fio;
     QMap<unsigned int, Card*> m_cards;
 
-    std::function<Card*(QString)> m_addNewCard;
+    std::function<void(QString)> m_addNewCard;
     std::function<void(QString, unsigned int)> m_removeCard;
 
     // Не доступен

@@ -1,23 +1,47 @@
 #include "client.h"
 
-Client::Client(QString fio,
-               std::function<Card*(QString)>& addNewCard,
-               std::function<void(QString, unsigned int)>& removeCard) :
+Client::Client(const QString& fio,
+               const std::function<void(QString)> addNewCard,
+               const std::function<void(QString, unsigned int)> removeCard) :
     m_fio(fio), m_addNewCard(addNewCard), m_removeCard(removeCard) {}
 
+Client::Client(const Client& X) :
+    m_fio(X.m_fio), m_addNewCard(X.m_addNewCard), m_removeCard(X.m_removeCard) {}
+
+Client& Client::operator= (const Client& X)
+{
+    if(this != &X)
+    {
+        m_fio = X.m_fio;
+        m_addNewCard = X.m_addNewCard;
+        m_removeCard = X.m_removeCard;
+    }
+    return *this;
+}
 
 void Client::AddNewCard()
 {
-    Card* card = m_addNewCard(m_fio);
+    m_addNewCard(m_fio);
+}
+
+void Client::AddNewCard(Card* card)
+{
     m_cards[card->GetID()] = card;
 }
 
 void Client::DeleteCard(const unsigned int& id)
 {
-    m_cards.remove(id);
-    m_removeCard(m_fio, id);
+    if (m_cards.contains(id))
+    {
+        m_cards.remove(id);
+        m_removeCard(m_fio, id);
+    }
 }
 
+QList<unsigned int> Client::GetCardIds()
+{
+    return m_cards.keys();
+}
 
 double Client::GetCardBalance(const unsigned int& id)
 {
