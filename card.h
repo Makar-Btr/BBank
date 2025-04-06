@@ -8,11 +8,11 @@ public:
 
     unsigned int GetID();
 
-    bool IsBlicked();
+    bool IsBlocked();
     void Block();
-    void Unlock();
+    void UnBlock();
 
-    void GetBalance();
+    double GetBalance();
     // value - значение которое будет прибавлено к балансу.
     // Если положительное - баланс будет увеличен.
     // Если отрицательное - баланс будет уменьшен.
@@ -21,7 +21,7 @@ public:
 private:
     unsigned int m_id;
     double m_balance;
-    bool m_isLoced;
+    bool m_isBlocked;
 
     // ВАЖНО!
     // Заблокирована возможность использовать конструктор поумолчанию!
