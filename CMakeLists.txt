@@ -17,6 +17,7 @@ add_executable(BBank
   card.h card.cpp
   bank.h bank.cpp
   client.h client.cpp
+  menu.h menu.cpp
 )
 target_link_libraries(BBank Qt${QT_VERSION_MAJOR}::Core)
 
