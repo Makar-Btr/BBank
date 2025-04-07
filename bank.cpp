@@ -58,6 +58,14 @@ void Bank::AddCard(const QString &fio)
 
 void Bank::RemoveCard(const QString &fio, const unsigned int& cardId)
 {
+    if(m_clients.contains(fio))
+    {
+        if(m_cards.contains(cardId))
+        {
+            m_clients[fio].DeleteCard(cardId);
+            m_cards.remove(cardId);
+        }
+    }
     // Если клиента не существует - игнор
     // Если карты не существует - игнор
     // Удалить крату из m_cards
@@ -66,6 +74,13 @@ void Bank::RemoveCard(const QString &fio, const unsigned int& cardId)
 
 void Bank::BlockCard(const QString &fio, const unsigned int& cardId)
 {
+    if(m_clients.contains(fio))
+    {
+        if(m_cards.contains(cardId))
+        {
+            m_clients[fio].BlockCard(cardId);
+        }
+    }
     // Если клиента не существует - игнор
     // Если карты не существует - игнор
     // m_cards.ЗаблокироватьКарту()
