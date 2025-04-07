@@ -15,7 +15,7 @@ public:
 
     void AddClient(const QString &fio);
     void RemoveClient(const QString &fio);
-    QString GetClientInfo(const QString &fio);
+    QList<QString> GetClientInfo();
 
     void AddCard(const QString &fio);
     void RemoveCard(const QString &fio, const unsigned int& cardId);

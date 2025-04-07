@@ -1,6 +1,11 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include <QMap>
+#include <QString>
+
+#include "bank.h"
+
 class Menu
 {
 public:
@@ -14,6 +19,9 @@ public:
 protected:
     void SelectBankOperation();
     void SelectClientOperation();
+
+private:
+    QMap<QString, Bank> m_banks;
 };
 
 #endif // MENU_H
