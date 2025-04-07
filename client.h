@@ -28,6 +28,8 @@ public:
     void BlockCard(const unsigned int& id);
     void UnblockCard(const unsigned int& id);
 
+    QList<unsigned int> GetCardsInfo();
+
 private:
     QString m_fio;
     QMap<unsigned int, Card*> m_cards;

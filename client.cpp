@@ -76,3 +76,9 @@ void Client::UnblockCard(const unsigned int& id)
         m_cards[id]->UnBlock();
     }
 }
+
+
+QList<unsigned int> Client::GetCardsInfo()
+{
+    return m_cards.keys();
+}
