@@ -3,8 +3,11 @@
 
 #include <QMap>
 #include <QString>
+#include <QTextStream>
 
 #include "bank.h"
+
+using namespace Qt;
 
 class Menu
 {
