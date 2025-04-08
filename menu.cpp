@@ -11,39 +11,44 @@ void Menu::Run()
             << "\t1 - банк" << endl
             << "\t2 - клиент" << endl
             << "\t3 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             SelectBankOperation();
             break;
-        }
         case '2':
-        {
             SelectClientOperation();
             break;
-        }
         case '3':
-        {
             run = false;
             break;
-        }
         case '^':
-        {
             out << "Уходи, тебя сюда не приглашали!";
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
 
+// Helper method to get user command
+char Menu::GetUserCommand()
+{
+    char command;
+    in >> command;
+    return command;
+}
+
+// Helper method to display menu options
+void Menu::DisplayMenu(const QStringList& options)
+{
+    for (const auto& option : options)
+    {
+        out << option << endl;
+    }
+}
 
 //-----------------------БАНК----------------------------------
 void Menu::SelectBankOperation()
@@ -51,40 +56,31 @@ void Menu::SelectBankOperation()
     bool run = true;
     while(run)
     {
-        out << "выберите команду:" << endl
-            << "\t1 - посмотреть все банки" << endl
-            << "\t2 - создать новый банк" << endl
-            << "\t3 - выбрать банк" << endl
-            << "\t4 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду:",
+            "\t1 - посмотреть все банки",
+            "\t2 - создать новый банк",
+            "\t3 - выбрать банк",
+            "\t4 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Bank_GetAllBanks();
             break;
-        }
         case '2':
-        {
             Bank_AddNewBank();
             break;
-        }
         case '3':
-        {
-            Bank_ChooseBank(); //пишем имя банка и запускаем Bank_SelectChoosedBankOperation()
+            Bank_ChooseBank();
             break;
-        }
         case '4':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -94,46 +90,35 @@ void Menu::Bank_SelectChoosedBankOperation(const QString& BankName)
     bool run = true;
     while(run)
     {
-        out << "выберите команду:" << endl
-            << "\t1 - удалить банк" << endl
-            << "\t2 - посмотреть всех клиентов банка" << endl
-            << "\t3 - удалить клиента" << endl
-            << "\t4 - выбрать клиента" << endl
-            << "\t5 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду:",
+            "\t1 - удалить банк",
+            "\t2 - посмотреть всех клиентов банка",
+            "\t3 - удалить клиента",
+            "\t4 - выбрать клиента",
+            "\t5 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Bank_RemoveBank(BankName);
             break;
-        }
         case '2':
-        {
             Bank_GetAllClients(BankName);
             break;
-        }
         case '3':
-        {
             Bank_RemoveClient(BankName);
             break;
-        }
         case '4':
-        {
             Bank_ChooseClient(BankName);
             break;
-        }
         case '5':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -143,40 +128,31 @@ void Menu::Bank_SelectChoosedClientOperation(const QString& BankName, const QStr
     bool run = true;
     while(run)
     {
-        out << "выберите команду;" << endl
-            << "\t1 - посмотреть все карты клиента" << endl
-            << "\t2 - удалить карту" << endl
-            << "\t3 - выбрать карту" << endl
-            << "\t4 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду;",
+            "\t1 - посмотреть все карты клиента",
+            "\t2 - удалить карту",
+            "\t3 - выбрать карту",
+            "\t4 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Bank_GetAllCards(BankName, ClientFIO);
             break;
-        }
         case '2':
-        {
             Bank_RemoveCard(BankName, ClientFIO);
             break;
-        }
         case '3':
-        {
             Bank_ChooseCard(BankName, ClientFIO);
             break;
-        }
         case '4':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -188,40 +164,31 @@ void Menu::Bank_SelectChoosedCardOperation(const QString& BankName,
     bool run = true;
     while(run)
     {
-        out << "выберите команду:" << endl
-            << "\t1 - узнать баланс" << endl
-            << "\t2 - заблокировать" << endl
-            << "\t3 - разблокировать" << endl
-            << "\t4 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду:",
+            "\t1 - узнать баланс",
+            "\t2 - заблокировать",
+            "\t3 - разблокировать",
+            "\t4 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Bank_GetBalance(BankName,ClientFIO,CardID);
             break;
-        }
         case '2':
-        {
             Bank_BlockCard(BankName,ClientFIO,CardID);
             break;
-        }
         case '3':
-        {
             Bank_UnblockCard(BankName,ClientFIO,CardID);
             break;
-        }
         case '4':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -233,40 +200,31 @@ void Menu::SelectClientOperation()
     bool run = true;
     while(run)
     {
-        out << "выберите команду" << endl
-            << "\t1 - посмотреть всех клиентов" << endl
-            << "\t2 - создать нового клиента" << endl
-            << "\t3 - выбрать клиента" << endl
-            << "\t4 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду",
+            "\t1 - посмотреть всех клиентов",
+            "\t2 - создать нового клиента",
+            "\t3 - выбрать клиента",
+            "\t4 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Client_GetAllClients();
             break;
-        }
         case '2':
-        {
             Client_AddNewClient();
             break;
-        }
         case '3':
-        {
             Client_ChooseClient();
             break;
-        }
         case '4':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -276,52 +234,39 @@ void Menu::Client_SelectChoosedClientOperation(const QString& ClientFIO)
     bool run = true;
     while(run)
     {
-        out << "выберите команду;" << endl
-            << "\t1 - удалить клиента" << endl
-            << "\t2 - посмотреть все карты клиента" << endl
-            << "\t3 - добавить карту" << endl
-            << "\t4 - удалить карту" << endl
-            << "\t5 - выбрать карту" << endl
-            << "\t6 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду;",
+            "\t1 - удалить клиента",
+            "\t2 - посмотреть все карты клиента",
+            "\t3 - добавить карту",
+            "\t4 - удалить карту",
+            "\t5 - выбрать карту",
+            "\t6 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Client_RemoveClient();
             break;
-        }
         case '2':
-        {
             Client_GetAllCard();
             break;
-        }
         case '3':
-        {
             Client_AddCard();
             break;
-        }
         case '4':
-        {
             Client_RemoveCard();
             break;
-        }
         case '5':
-        {
             Client_ChooseCard();
             break;
-        }
         case '6':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -333,34 +278,27 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
     bool run = true;
     while(run)
     {
-        out << "выберите команду:" << endl
-            << "\t1 - узнать баланс" << endl
-            << "\t2 - использовать карту" << endl
-            << "\t3 - ВЫХОД" << endl;
-        char command;
-        in >> command;
+        DisplayMenu({
+            "выберите команду:",
+            "\t1 - узнать баланс",
+            "\t2 - использовать карту",
+            "\t3 - ВЫХОД"
+        });
+        char command = GetUserCommand();
         switch (command)
         {
         case '1':
-        {
             Bank_GetBalance(BankName,ClientFIO,CardID);
             break;
-        }
         case '2':
-        {
             Client_UseCard();
             break;
-        }
         case '3':
-        {
             run = false;
             break;
-        }
         default:
-        {
             out << "неивестная команда";
             break;
-        }
         }
     }
 }
@@ -428,34 +366,38 @@ QList<QString> Menu::Bank_GetAllClients(const QString& BankName)
     return Clients;
 }
 
+// Helper method to select a client by its index
+size_t Menu::SelectClient(const QList<QString>& Clients, const QString& prompt)
+{
+    while (true)
+    {
+        out << prompt << endl;
+        for (int i = 0; i < Clients.size(); i++)
+        {
+            out << i + 1 << " " << Clients[i] << endl;
+        }
+        size_t ClientNumber;
+        in >> ClientNumber;
+        if (ClientNumber > 0 && ClientNumber <= Clients.size())
+        {
+            return ClientNumber - 1; // Convert to zero-based index
+        }
+        out << "такого клиента нет. пожалуйста, введите другой номер" << endl;
+    }
+}
+
 void Menu::Bank_RemoveClient(const QString& BankName)
 {
-    out << "выберите клиента (порядковый номер)" << endl;
     QList<QString> Clients = Bank_GetAllClients(BankName);
-    size_t ClientNumber;
-    in >> ClientNumber;
-    if(ClientNumber >= Clients.size())
-    {
-        out << "такого клиента нет. пожалуйста, введите другой номер";
-        Bank_RemoveClient(BankName);
-        return;
-    }
-    m_banks[BankName].RemoveClient(Clients[ClientNumber]);
+    size_t ClientIndex = SelectClient(Clients, "выберите клиента (порядковый номер)");
+    m_banks[BankName].RemoveClient(Clients[ClientIndex]);
 }
 
 void Menu::Bank_ChooseClient(const QString& BankName)
 {
-    out << "выберите клиента (порядковый номер)" << endl;
     QList<QString> Clients = Bank_GetAllClients(BankName);
-    size_t ClientNumber;
-    in >> ClientNumber;
-    if(ClientNumber >= Clients.size())
-    {
-        out << "такого клиента нет. пожалуйста, введите другой номер";
-        Bank_ChooseClient(BankName);
-        return;
-    }
-    Bank_SelectChoosedClientOperation(BankName, Clients[ClientNumber]);
+    size_t ClientIndex = SelectClient(Clients, "выберите клиента (порядковый номер)");
+    Bank_SelectChoosedClientOperation(BankName, Clients[ClientIndex]);
 }
 
 
@@ -469,36 +411,39 @@ QList<size_t> Menu::Bank_GetAllCards(const QString& BankName, const QString& Cli
     return Cards;
 }
 
+// Helper method to select a card by its index
+size_t Menu::SelectCard(const QList<size_t>& Cards, const QString& prompt)
+{
+    while (true)
+    {
+        out << prompt << endl;
+        for (int i = 0; i < Cards.size(); i++)
+        {
+            out << i + 1 << " " << Cards[i] << endl;
+        }
+        size_t CardNumber;
+        in >> CardNumber;
+        if (CardNumber > 0 && CardNumber <= Cards.size())
+        {
+            return CardNumber - 1; // Convert to zero-based index
+        }
+        out << "такой карты нет. пожалуйста, введите другой номер" << endl;
+    }
+}
+
 void Menu::Bank_RemoveCard(const QString& BankName, const QString& ClientFIO)
 {
-    out << "выберите карту (порядковый номер)" << endl;
     QList<size_t> Cards = Bank_GetAllCards(BankName, ClientFIO);
-    size_t CardNumber;
-    in >> CardNumber;
-    if(CardNumber >= Cards.size())
-    {
-        out << "такой карты нет. пожалуйста, введите другой номер";
-        Bank_RemoveClient(BankName);
-        return;
-    }
-    m_banks[ClientFIO].RemoveCard(ClientFIO, CardNumber);
+    size_t CardIndex = SelectCard(Cards, "выберите карту (порядковый номер)");
+    m_banks[BankName].RemoveCard(ClientFIO, Cards[CardIndex]);
 }
 
 void Menu::Bank_ChooseCard(const QString& BankName, const QString& ClientFIO)
 {
-    out << "выберите карту (порядковый номер)" << endl;
     QList<size_t> Cards = Bank_GetAllCards(BankName, ClientFIO);
-    size_t CardNumber;
-    in >> CardNumber;
-    if(CardNumber >= Cards.size())
-    {
-        out << "такой карты нет. пожалуйста, введите другой номер";
-        Bank_RemoveClient(BankName);
-        return;
-    }
-    Bank_SelectChoosedCardOperation(BankName, ClientFIO, CardNumber);
+    size_t CardIndex = SelectCard(Cards, "выберите карту (порядковый номер)");
+    Bank_SelectChoosedCardOperation(BankName, ClientFIO, Cards[CardIndex]);
 }
-
 
 void Menu::Bank_GetBalance(const QString& BankName,
                            const QString& ClientFIO,
