@@ -203,9 +203,8 @@ void Menu::SelectClientOperation()
         DisplayMenu({
             "выберите команду",
             "\t1 - посмотреть всех клиентов",
-            "\t2 - создать нового клиента",
-            "\t3 - выбрать клиента",
-            "\t4 - ВЫХОД"
+            "\t2 - выбрать клиента",
+            "\t3 - ВЫХОД"
         });
         char command = GetUserCommand();
         switch (command)
@@ -214,12 +213,9 @@ void Menu::SelectClientOperation()
             Client_GetAllClients();
             break;
         case '2':
-            Client_AddNewClient();
-            break;
-        case '3':
             Client_ChooseClient();
             break;
-        case '4':
+        case '3':
             run = false;
             break;
         default:
@@ -247,19 +243,19 @@ void Menu::Client_SelectChoosedClientOperation(const QString& ClientFIO)
         switch (command)
         {
         case '1':
-            Client_RemoveClient();
+            Client_RemoveClient(ClientFIO);
             break;
         case '2':
-            Client_GetAllCard();
+            Client_GetAllCard(ClientFIO);
             break;
         case '3':
-            Client_AddCard();
+            Client_AddCard(ClientFIO);
             break;
         case '4':
-            Client_RemoveCard();
+            Client_RemoveCard(ClientFIO);
             break;
         case '5':
-            Client_ChooseCard();
+            Client_ChooseCard(ClientFIO);
             break;
         case '6':
             run = false;
@@ -282,7 +278,9 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
             "выберите команду:",
             "\t1 - узнать баланс",
             "\t2 - использовать карту",
-            "\t3 - ВЫХОД"
+            "\t3 - заблокировать карту",
+            "\t4 - разблокировать карту",
+            "\t5 - ВЫХОД"
         });
         char command = GetUserCommand();
         switch (command)
@@ -291,9 +289,15 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
             Bank_GetBalance(BankName,ClientFIO,CardID);
             break;
         case '2':
-            Client_UseCard();
+            Client_UseCard(BankName,ClientFIO,CardID);
             break;
         case '3':
+            Bank_BlockCard(BankName,ClientFIO,CardID);
+            break;
+        case '4':
+            Bank_UnblockCard(BankName,ClientFIO,CardID);
+            break;
+        case '5':
             run = false;
             break;
         default:
@@ -469,56 +473,193 @@ void Menu::Bank_UnblockCard(const QString& BankName,
 
 
 //скрытые функции клиента
-void Menu::Client_GetAllClients()
+QList<QString> Menu::Client_GetAllClients()
 {
-
-}
-
-void Menu::Client_AddNewClient()
-{
-
+    QList<QString> Clients;
+    foreach(Bank bank, m_banks)
+    {
+        Clients += bank.GetClientInfo();
+    }
+    for(int i = 0; i < Clients.size(); i++)
+    {
+        out << i + 1 << " " << Clients[i] << endl;
+    }
+    return Clients;
 }
 
 void Menu::Client_ChooseClient()
 {
-
+    out << "выберите клиента (порядковый номер)" << endl;
+    QList<QString> Clients = Client_GetAllClients();
+    size_t ClientNumber;
+    in >> ClientNumber;
+    if(ClientNumber > Clients.size())
+    {
+        out << "такого клиента нет. пожалуйста, введите другой номер" << endl;
+        Client_ChooseClient();
+        return;
+    }
+    Client_SelectChoosedClientOperation(Clients[ClientNumber]);
 }
 
 
-void Menu::Client_RemoveClient()
+QList<QString> Menu::WhichBanksClient(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks;
+    QList<QString> BankClients;
+    foreach(Bank bank, m_banks)
+    {
+        BankClients = bank.GetClientInfo();
+        for(int i = 0; i < BankClients.size(); i++)
+        {
+            if(ClientFIO == BankClients[i])
+                Client_of_Banks.push_back(BankClients[i]);
+        }
+    }
+    return Client_of_Banks;
 }
 
-void Menu::Client_GetAllCard()
+void Menu::Client_RemoveClient(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks = WhichBanksClient(ClientFIO);
+    out << ClientFIO << " является клиентом" << endl;
+    for(int i = 0; i < Client_of_Banks.size(); i++)
+    {
+        out << i + 1 << " " << Client_of_Banks[i] << endl;
+    }
+    out << "выберите банк (порядковый номер) для проведения операции" << endl;
+    size_t BankNumber;
+    in >> BankNumber;
+    if(BankNumber > Client_of_Banks.size())
+    {
+        out << "такого банка нет. пожалуйста, введите другой номер" << endl;
+        Client_RemoveClient(ClientFIO);
+        return;
+    }
+    m_banks[Client_of_Banks[BankNumber]].RemoveClient(ClientFIO);
 }
 
-void Menu::Client_AddCard()
+void Menu::Client_GetAllCard(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks = WhichBanksClient(ClientFIO);
+    out << ClientFIO << " является клиентом" << endl;
+    for(int i = 0; i < Client_of_Banks.size(); i++)
+    {
+        out << i + 1 << " " << Client_of_Banks[i] << endl;
+    }
+    out << "выберите банк (порядковый номер) для проведения операции" << endl;
+    size_t BankNumber;
+    in >> BankNumber;
+    if(BankNumber > Client_of_Banks.size())
+    {
+        out << "такого банка нет. пожалуйста, введите другой номер" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    QList<size_t> ClientCards = m_banks[Client_of_Banks[BankNumber]].GetAllClientCards(ClientFIO);
+    for(int i = 0; i < ClientCards.size(); i++)
+    {
+        out << i + 1 << " " << ClientCards[i] << endl;
+    }
 }
 
-void Menu::Client_RemoveCard()
+void Menu::Client_AddCard(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks = WhichBanksClient(ClientFIO);
+    out << ClientFIO << " является клиентом" << endl;
+    for(int i = 0; i < Client_of_Banks.size(); i++)
+    {
+        out << i + 1 << " " << Client_of_Banks[i] << endl;
+    }
+    out << "выберите банк (порядковый номер) для проведения операции" << endl;
+    size_t BankNumber;
+    in >> BankNumber;
+    if(BankNumber > Client_of_Banks.size())
+    {
+        out << "такого банка нет. пожалуйста, введите другой номер" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    m_banks[Client_of_Banks[BankNumber]].AddCard(ClientFIO);
 }
 
-void Menu::Client_ChooseCard()
+void Menu::Client_RemoveCard(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks = WhichBanksClient(ClientFIO);
+    out << ClientFIO << " является клиентом" << endl;
+    for(int i = 0; i < Client_of_Banks.size(); i++)
+    {
+        out << i + 1 << " " << Client_of_Banks[i] << endl;
+    }
+    out << "выберите банк (порядковый номер) для проведения операции" << endl;
+    size_t BankNumber;
+    in >> BankNumber;
+    if(BankNumber > Client_of_Banks.size())
+    {
+        out << "такого банка нет" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    out << "выберите карту (порядковый номер) для проведения операции" << endl;
+    QList<size_t> ClientCards = m_banks[Client_of_Banks[BankNumber]].GetAllClientCards(ClientFIO);
+    for(int i = 0; i < ClientCards.size(); i++)
+    {
+        out << i + 1 << " " << ClientCards[i] << endl;
+    }
+    size_t CardNumber;
+    in >> CardNumber;
+    if(CardNumber > ClientCards.size())
+    {
+        out << "такой карты нет" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    m_banks[Client_of_Banks[BankNumber]].RemoveCard(ClientFIO, CardNumber);
 }
 
-
-void Menu::Client_GetBalance()
+void Menu::Client_ChooseCard(const QString& ClientFIO)
 {
-
+    QList<QString> Client_of_Banks = WhichBanksClient(ClientFIO);
+    out << ClientFIO << " является клиентом" << endl;
+    for(int i = 0; i < Client_of_Banks.size(); i++)
+    {
+        out << i + 1 << " " << Client_of_Banks[i] << endl;
+    }
+    out << "выберите банк (порядковый номер) для проведения операции" << endl;
+    size_t BankNumber;
+    in >> BankNumber;
+    if(BankNumber > Client_of_Banks.size())
+    {
+        out << "такого банка нет" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    out << "выберите карту (порядковый номер) для проведения операции" << endl;
+    QList<size_t> ClientCards = m_banks[Client_of_Banks[BankNumber]].GetAllClientCards(ClientFIO);
+    for(int i = 0; i < ClientCards.size(); i++)
+    {
+        out << i + 1 << " " << ClientCards[i] << endl;
+    }
+    size_t CardNumber;
+    in >> CardNumber;
+    if(CardNumber > ClientCards.size())
+    {
+        out << "такой карты нет" << endl;
+        Client_GetAllCard(ClientFIO);
+        return;
+    }
+    Client_SelectChoosedCardOperation(Client_of_Banks[BankNumber],
+                                      ClientFIO,
+                                      ClientCards[CardNumber]);
 }
 
-void Menu::Client_UseCard()
+
+void Menu::Client_UseCard(const QString& BankName,
+                          const QString& ClientFIO,
+                          const size_t& CardID)
 {
-
+    double value;
+    in >> value;
+    m_banks[BankName].GetClient(ClientFIO).UseCard(CardID, value);
 }
-
 

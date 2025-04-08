@@ -25,6 +25,7 @@ private:
     void DisplayMenu(const QStringList& options);
     size_t SelectCard(const QList<size_t>& Cards, const QString& prompt);
     size_t SelectClient(const QList<QString>& Clients, const QString& prompt);
+    QList<QString> WhichBanksClient(const QString& ClientFIO);
 
     //функции для Run
     void SelectBankOperation();
@@ -72,20 +73,20 @@ private:
 
     //----------------------КЛИЕНТ----------------
     //функции для SelectClientOperation
-    void Client_GetAllClients();
-    void Client_AddNewClient();
+    QList<QString> Client_GetAllClients();
     void Client_ChooseClient(); //пишем имя клиента и запускаем Client_SelectChoosedClientOperation()
 
     //функции для Client_SelectChoosedClientOperation
-    void Client_RemoveClient();
-    void Client_GetAllCard();
-    void Client_AddCard();
-    void Client_RemoveCard();
-    void Client_ChooseCard(); //пишем ID карты и запускаем Client_SelectChoosedCardOperation()
+    void Client_RemoveClient(const QString& ClientFIO);
+    void Client_GetAllCard(const QString& ClientFIO);
+    void Client_AddCard(const QString& ClientFIO);
+    void Client_RemoveCard(const QString& ClientFIO);
+    void Client_ChooseCard(const QString& ClientFIO); //пишем ID карты и запускаем Client_SelectChoosedCardOperation()
 
     //функции для Client_SelectChoosedClientOperation
-    void Client_GetBalance();
-    void Client_UseCard();
+    void Client_UseCard(const QString& BankName,
+                        const QString& ClientFIO,
+                        const size_t& CardID);
 
     QMap<QString, Bank> m_banks;
     QTextStream out;
