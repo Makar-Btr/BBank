@@ -2,7 +2,7 @@
 
 Client::Client(const QString& fio,
                const std::function<void(QString)> addNewCard,
-               const std::function<void(QString, unsigned int)> removeCard) :
+               const std::function<void(QString, size_t)> removeCard) :
     m_fio(fio), m_addNewCard(addNewCard), m_removeCard(removeCard) {}
 
 Client::Client(const Client& X) :
@@ -19,6 +19,7 @@ Client& Client::operator= (const Client& X)
     return *this;
 }
 
+
 void Client::AddNewCard()
 {
     m_addNewCard(m_fio);
@@ -29,7 +30,7 @@ void Client::AddNewCard(Card* card)
     m_cards[card->GetID()] = card;
 }
 
-void Client::DeleteCard(const unsigned int& id)
+void Client::DeleteCard(const size_t& id)
 {
     if (m_cards.contains(id))
     {
@@ -38,17 +39,17 @@ void Client::DeleteCard(const unsigned int& id)
     }
 }
 
-QList<unsigned int> Client::GetCardIds()
+QList<size_t> Client::GetCardIds()
 {
     return m_cards.keys();
 }
 
-double Client::GetCardBalance(const unsigned int& id)
+double Client::GetCardBalance(const size_t& id)
 {
     return m_cards[id]->GetBalance();
 }
 
-void Client::UseCard(const unsigned int& id, const double& value)
+void Client::UseCard(const size_t& id, const double& value)
 {
     if (IsCardBlocked(id) == false)
     {
@@ -56,12 +57,12 @@ void Client::UseCard(const unsigned int& id, const double& value)
     }
 }
 
-bool Client::IsCardBlocked(const unsigned int& id)
+bool Client::IsCardBlocked(const size_t& id)
 {
     return m_cards[id]->IsBlocked();
 }
 
-void Client::BlockCard(const unsigned int& id)
+void Client::BlockCard(const size_t& id)
 {
     if (IsCardBlocked(id) == false)
     {
@@ -69,7 +70,7 @@ void Client::BlockCard(const unsigned int& id)
     }
 }
 
-void Client::UnblockCard(const unsigned int& id)
+void Client::UnblockCard(const size_t& id)
 {
     if (IsCardBlocked(id))
     {
@@ -78,7 +79,7 @@ void Client::UnblockCard(const unsigned int& id)
 }
 
 
-QList<unsigned int> Client::GetCardsInfo()
+QList<size_t> Client::GetCardsInfo()
 {
     return m_cards.keys();
 }

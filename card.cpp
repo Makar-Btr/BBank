@@ -1,9 +1,9 @@
 #include "card.h"
 
-Card::Card(unsigned int id) : m_id(id), m_balance(0), m_isBlocked(false) {}
+Card::Card(size_t id) : m_id(id), m_balance(0), m_isBlocked(false) {}
 
 
-unsigned int Card::GetID()
+size_t Card::GetID()
 {
     return m_id;
 }

@@ -25,31 +25,43 @@ private:
     void SelectClientOperation();
 
     void Bank_SelectChoosedBankOperation(const QString& BankName);
-    void Bank_SelectChoosedClientOperation(const QString& ClientFIO);
-    void Bank_SelectChoosedCardOperation(const unsigned int& CardID);
+    void Bank_SelectChoosedClientOperation(const QString& BankName, const QString& ClientFIO);
+    void Bank_SelectChoosedCardOperation(const QString& BankName,
+                                         const QString& ClientFIO,
+                                         const size_t& CardID);
 
     void Client_SelectChoosedClientOperation(const QString& ClientFIO);
-    void Client_SelectChoosedCardOperation(const unsigned int& CardID);
+    void Client_SelectChoosedCardOperation(const QString& BankName,
+                                           const QString& ClientFIO,
+                                           const size_t& CardID);
 
     //-----------------------БАНК----------------
     //функции для SelectBankOperation
-    void Bank_GetAllBanks();
+    QList<QString> Bank_GetAllBanks();
     void Bank_AddNewBank();
     void Bank_ChooseBank(); //пишем имя банка и запускаем Bank_SelectChoosedBankOperation()
 
     //функции для Bank_SelectChoosedBankOperation
-    void Bank_RemoveBank();
-    void Bank_GetAllClients();
-    void Bank_RemoveClient();
-    void Bank_ChooseClient(); //пишем имя клиента и запускаем Bank_SelectChoosedClientOperation()
+    void Bank_RemoveBank(const QString& BankName);
+    QList<QString> Bank_GetAllClients(const QString& BankName);
+    void Bank_RemoveClient(const QString& BankName);
+    void Bank_ChooseClient(const QString& BankName); //пишем имя клиента и запускаем Bank_SelectChoosedClientOperation()
 
     //функции для Bank_SelectChoosedClientOperation
-    void Bank_GetAllCards();
-    void Bank_RemoveCard();
-    void Bank_ChooseCard(); //пишем ID карты и запускаем Bank_SelectChoosedCardOperation()
+    QList<size_t> Bank_GetAllCards(const QString& BankName, const QString& ClientFIO);
+    void Bank_RemoveCard(const QString& BankName, const QString& ClientFIO);
+    void Bank_ChooseCard(const QString& BankName, const QString& ClientFIO); //пишем ID карты и запускаем Bank_SelectChoosedCardOperation()
 
     //функции для Bank_SelectChoosedCardOperation
-    void Bank_GetBalance();
+    void Bank_GetBalance(const QString& BankName,
+                         const QString& ClientFIO,
+                         const size_t& CardID);
+    void Bank_BlockCard(const QString& BankName,
+                         const QString& ClientFIO,
+                         const size_t& CardID);
+    void Bank_UnblockCard(const QString& BankName,
+                        const QString& ClientFIO,
+                        const size_t& CardID);
 
 
     //----------------------КЛИЕНТ----------------

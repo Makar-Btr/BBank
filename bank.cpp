@@ -22,7 +22,7 @@ void Bank::RemoveClient(const QString &fio)
     if (m_clients.contains(fio))
     {
         QList IDs = m_clients[fio].GetCardIds();
-        foreach (unsigned int id, IDs)
+        foreach (size_t id, IDs)
         {
             m_cards.remove(id);
         }
@@ -35,6 +35,11 @@ QList<QString> Bank::GetClientInfo()
     return m_clients.keys();
 }
 
+QList<size_t> Bank::GetAllClientCards(const QString &fio)
+{
+    return m_clients[fio].GetCardIds();
+}
+
 
 void Bank::AddCard(const QString &fio)
 {
@@ -42,7 +47,7 @@ void Bank::AddCard(const QString &fio)
     {
         AddClient(fio);
     }
-    unsigned int newId;
+    size_t newId;
     while (true)
     {
         std::srand(std::time({})); // use current time as seed for random generator
@@ -56,7 +61,7 @@ void Bank::AddCard(const QString &fio)
     m_clients[fio].AddNewCard(&m_cards[newId]);
 }
 
-void Bank::RemoveCard(const QString &fio, const unsigned int& cardId)
+void Bank::RemoveCard(const QString &fio, const size_t& cardId)
 {
     if(m_clients.contains(fio))
     {
@@ -66,13 +71,9 @@ void Bank::RemoveCard(const QString &fio, const unsigned int& cardId)
             m_cards.remove(cardId);
         }
     }
-    // Если клиента не существует - игнор
-    // Если карты не существует - игнор
-    // Удалить крату из m_cards
-    // Удалить карту из m_clients.m_cards
 }
 
-void Bank::BlockCard(const QString &fio, const unsigned int& cardId)
+void Bank::BlockCard(const QString &fio, const size_t& cardId)
 {
     if(m_clients.contains(fio))
     {
@@ -81,7 +82,20 @@ void Bank::BlockCard(const QString &fio, const unsigned int& cardId)
             m_clients[fio].BlockCard(cardId);
         }
     }
-    // Если клиента не существует - игнор
-    // Если карты не существует - игнор
-    // m_cards.ЗаблокироватьКарту()
+}
+
+void Bank::UnblockCard(const QString &fio, const size_t &cardId)
+{
+    if(m_clients.contains(fio))
+    {
+        if(m_cards.contains(cardId))
+        {
+            m_clients[fio].UnblockCard(cardId);
+        }
+    }
+}
+
+double Bank::CheckCardBalance(const QString &fio, const size_t &cardId)
+{
+    return m_clients[fio].GetCardBalance(cardId);
 }

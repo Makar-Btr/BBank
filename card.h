@@ -4,9 +4,9 @@
 class Card
 {
 public:
-    Card(unsigned int id);
+    Card(size_t id);
 
-    unsigned int GetID();
+    size_t GetID();
 
     bool IsBlocked();
     void Block();
@@ -19,7 +19,7 @@ public:
     void UpdateBalance(const double& value);
 
 private:
-    unsigned int m_id;
+    size_t m_id;
     double m_balance;
     bool m_isBlocked;
 
