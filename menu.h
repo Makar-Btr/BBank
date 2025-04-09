@@ -4,6 +4,7 @@
 #include <QMap>
 #include <QString>
 #include <QTextStream>
+#include <windows.h>
 
 #include "bank.h"
 
@@ -89,8 +90,8 @@ private:
                         const size_t& CardID);
 
     QMap<QString, Bank> m_banks;
-    QTextStream out;
-    QTextStream in;
+    QTextStream m_out;
+    QTextStream m_in;
 };
 
 #endif // MENU_H

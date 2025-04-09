@@ -2,6 +2,19 @@
 
 Card::Card(size_t id) : m_id(id), m_balance(0), m_isBlocked(false) {}
 
+Card::Card(const Card& O) : m_id(O.m_id), m_balance(O.m_balance), m_isBlocked(O.m_isBlocked) {}
+
+Card& Card::operator= (const Card& O)
+{
+    if(this != &O)
+    {
+        m_id = O.m_id;
+        m_balance = O.m_balance;
+        m_isBlocked = O.m_isBlocked;
+    }
+    return *this;
+}
+
 
 size_t Card::GetID()
 {

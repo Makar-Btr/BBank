@@ -1,10 +1,18 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <cstddef>
+
 class Card
 {
 public:
+    // Не использовать!!!
+    // Нужен только для мап!
+    Card(){}
+
     Card(size_t id);
+    Card(const Card& O);
+    Card& operator= (const Card& O);
 
     size_t GetID();
 
@@ -22,11 +30,6 @@ private:
     size_t m_id;
     double m_balance;
     bool m_isBlocked;
-
-    // ВАЖНО!
-    // Заблокирована возможность использовать конструктор поумолчанию!
-    // Банк обязан контролировать ID создаваемых карт, что бы не создать 2 одинаковые.
-    Card();
 };
 
 #endif // CARD_H

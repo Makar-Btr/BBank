@@ -10,6 +10,10 @@
 class Client
 {
 public:
+    // Не использовать!!!
+    // Нужен только для мап!
+    Client(){}
+
     Client(const QString& fio,
            const std::function<void(QString)> addNewCard,
            const std::function<void(QString, size_t)> removeCard);
@@ -36,9 +40,6 @@ private:
 
     std::function<void(QString)> m_addNewCard;
     std::function<void(QString, size_t)> m_removeCard;
-
-    // Не доступен
-    Client();
 };
 
 #endif // CLIENT_H
