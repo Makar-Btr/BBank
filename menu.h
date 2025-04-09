@@ -22,7 +22,7 @@ public:
 
 private:
     // Helper methods
-    char GetUserCommand();
+    QString GetUserCommand();
     void DisplayMenu(const QStringList& options);
     size_t SelectCard(const QList<size_t>& Cards, const QString& prompt);
     size_t SelectClient(const QList<QString>& Clients, const QString& prompt);

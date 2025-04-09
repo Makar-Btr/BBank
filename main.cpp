@@ -9,5 +9,5 @@ int main(int argc, char *argv[])
     Menu menu;
     menu.Run();
 
-    return a.exec();
+    return 0;//a.exec();
 }

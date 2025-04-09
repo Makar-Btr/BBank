@@ -2,10 +2,9 @@
 
 Menu::Menu() : m_in(stdin), m_out(stdout)
 {
-    // Set locale for Cyrillic symbols
     setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251); // Set input code page to Windows-1251
-    SetConsoleOutputCP(1251); // Set output code page to Windows-1251
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
     m_in.setEncoding(QStringConverter::Encoding::System);
     m_out.setEncoding(QStringConverter::Encoding::System);
@@ -17,32 +16,33 @@ void Menu::Run()
     while(run)
     {
         m_out << "выберите права доступа:" << endl
-            << "\t1 - банк" << endl
-            << "\t2 - клиент" << endl
-            << "\t3 - ВЫХОД" << endl;
-        char command = GetUserCommand();
-        switch (command)
+              << "\t1 - банк" << endl
+              << "\t2 - клиент" << endl
+              << "\t3 - ВЫХОД" << endl;
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             SelectBankOperation();
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             SelectClientOperation();
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
 
 // Helper method to get user command
-char Menu::GetUserCommand()
+QString Menu::GetUserCommand()
 {
-    char command;
+    QString command;
     m_in >> command;
     return command;
 }
@@ -69,24 +69,26 @@ void Menu::SelectBankOperation()
             "\t3 - выбрать банк",
             "\t4 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             Bank_GetAllBanks();
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             Bank_AddNewBank();
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             Bank_ChooseBank();
-            break;
-        case '4':
+        }
+        else if (command == "4")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -104,27 +106,30 @@ void Menu::Bank_SelectChoosedBankOperation(const QString& BankName)
             "\t4 - выбрать клиента",
             "\t5 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             Bank_RemoveBank(BankName);
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             Bank_GetAllClients(BankName);
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             Bank_RemoveClient(BankName);
-            break;
-        case '4':
+        }
+        else if (command == "4")
+        {
             Bank_ChooseClient(BankName);
-            break;
-        case '5':
+        }
+        else if (command == "5")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -141,24 +146,26 @@ void Menu::Bank_SelectChoosedClientOperation(const QString& BankName, const QStr
             "\t3 - выбрать карту",
             "\t4 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             Bank_GetAllCards(BankName, ClientFIO);
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             Bank_RemoveCard(BankName, ClientFIO);
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             Bank_ChooseCard(BankName, ClientFIO);
-            break;
-        case '4':
+        }
+        else if (command == "4")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -177,24 +184,26 @@ void Menu::Bank_SelectChoosedCardOperation(const QString& BankName,
             "\t3 - разблокировать",
             "\t4 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
-            Bank_GetBalance(BankName,ClientFIO,CardID);
-            break;
-        case '2':
-            Bank_BlockCard(BankName,ClientFIO,CardID);
-            break;
-        case '3':
-            Bank_UnblockCard(BankName,ClientFIO,CardID);
-            break;
-        case '4':
+            Bank_GetBalance(BankName, ClientFIO, CardID);
+        }
+        else if (command == "2")
+        {
+            Bank_BlockCard(BankName, ClientFIO, CardID);
+        }
+        else if (command == "3")
+        {
+            Bank_UnblockCard(BankName, ClientFIO, CardID);
+        }
+        else if (command == "4")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -212,21 +221,22 @@ void Menu::SelectClientOperation()
             "\t2 - выбрать клиента",
             "\t3 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             Client_GetAllClients();
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             Client_ChooseClient();
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -245,30 +255,34 @@ void Menu::Client_SelectChoosedClientOperation(const QString& ClientFIO)
             "\t5 - выбрать карту",
             "\t6 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
             Client_RemoveClient(ClientFIO);
-            break;
-        case '2':
+        }
+        else if (command == "2")
+        {
             Client_GetAllCard(ClientFIO);
-            break;
-        case '3':
+        }
+        else if (command == "3")
+        {
             Client_AddCard(ClientFIO);
-            break;
-        case '4':
+        }
+        else if (command == "4")
+        {
             Client_RemoveCard(ClientFIO);
-            break;
-        case '5':
+        }
+        else if (command == "5")
+        {
             Client_ChooseCard(ClientFIO);
-            break;
-        case '6':
+        }
+        else if (command == "6")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -288,27 +302,30 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
             "\t4 - разблокировать карту",
             "\t5 - ВЫХОД"
         });
-        char command = GetUserCommand();
-        switch (command)
+        QString command = GetUserCommand();
+        if (command == "1")
         {
-        case '1':
-            Bank_GetBalance(BankName,ClientFIO,CardID);
-            break;
-        case '2':
-            Client_UseCard(BankName,ClientFIO,CardID);
-            break;
-        case '3':
-            Bank_BlockCard(BankName,ClientFIO,CardID);
-            break;
-        case '4':
-            Bank_UnblockCard(BankName,ClientFIO,CardID);
-            break;
-        case '5':
+            Bank_GetBalance(BankName, ClientFIO, CardID);
+        }
+        else if (command == "2")
+        {
+            Client_UseCard(BankName, ClientFIO, CardID);
+        }
+        else if (command == "3")
+        {
+            Bank_BlockCard(BankName, ClientFIO, CardID);
+        }
+        else if (command == "4")
+        {
+            Bank_UnblockCard(BankName, ClientFIO, CardID);
+        }
+        else if (command == "5")
+        {
             run = false;
-            break;
-        default:
+        }
+        else
+        {
             m_out << "неивестная команда" << endl;
-            break;
         }
     }
 }
@@ -329,9 +346,10 @@ QList<QString> Menu::Bank_GetAllBanks()
 void Menu::Bank_AddNewBank()
 {
     QString NewBankName;
+    m_out << "введите имя банка:" << endl;
     while(true)
     {
-        m_out << "введите имя банка";
+
         m_in >> NewBankName;
         if(m_banks.contains(NewBankName) == false)
         {
@@ -339,7 +357,7 @@ void Menu::Bank_AddNewBank()
         }
         else
         {
-            m_out << "Название уже занято. Пожалуйста, выберите другое";
+            m_out << "Название уже занято. Пожалуйста, выберите другое" << endl;
         }
     }
     m_banks[NewBankName] = Bank();
