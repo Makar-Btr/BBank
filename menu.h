@@ -52,6 +52,7 @@ private:
     //функции для Bank_SelectChoosedBankOperation
     void Bank_RemoveBank(const QString& BankName);
     QList<QString> Bank_GetAllClients(const QString& BankName);
+    void Bank_AddClient(const QString& BankName);
     void Bank_RemoveClient(const QString& BankName);
     void Bank_ChooseClient(const QString& BankName); //пишем имя клиента и запускаем Bank_SelectChoosedClientOperation()
 
