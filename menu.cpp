@@ -18,7 +18,7 @@ void Menu::Run()
         m_out << "выберите права доступа:" << endl
               << "\t1 - банк" << endl
               << "\t2 - клиент" << endl
-              << "\t3 - ВЫХОД" << endl;
+              << "\t0 - ВЫХОД" << endl;
         QString command = GetUserCommand();
         if (command == "1")
         {
@@ -28,7 +28,7 @@ void Menu::Run()
         {
             SelectClientOperation();
         }
-        else if (command == "3")
+        else if (command == "0")
         {
             run = false;
         }
@@ -67,7 +67,7 @@ void Menu::SelectBankOperation()
             "\t1 - посмотреть все банки",
             "\t2 - создать новый банк",
             "\t3 - выбрать банк",
-            "\t4 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -82,7 +82,7 @@ void Menu::SelectBankOperation()
         {
             Bank_ChooseBank();
         }
-        else if (command == "4")
+        else if (command == "0")
         {
             run = false;
         }
@@ -105,7 +105,7 @@ void Menu::Bank_SelectChoosedBankOperation(const QString& BankName)
             "\t3 - добавить клиента",
             "\t4 - удалить клиента",
             "\t5 - выбрать клиента",
-            "\t6 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -128,7 +128,7 @@ void Menu::Bank_SelectChoosedBankOperation(const QString& BankName)
         {
             Bank_ChooseClient(BankName);
         }
-        else if (command == "6")
+        else if (command == "0")
         {
             run = false;
         }
@@ -149,7 +149,7 @@ void Menu::Bank_SelectChoosedClientOperation(const QString& BankName, const QStr
             "\t1 - посмотреть все карты клиента",
             "\t2 - удалить карту",
             "\t3 - выбрать карту",
-            "\t4 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -164,7 +164,7 @@ void Menu::Bank_SelectChoosedClientOperation(const QString& BankName, const QStr
         {
             Bank_ChooseCard(BankName, ClientFIO);
         }
-        else if (command == "4")
+        else if (command == "0")
         {
             run = false;
         }
@@ -187,7 +187,7 @@ void Menu::Bank_SelectChoosedCardOperation(const QString& BankName,
             "\t1 - узнать баланс",
             "\t2 - заблокировать",
             "\t3 - разблокировать",
-            "\t4 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -202,7 +202,7 @@ void Menu::Bank_SelectChoosedCardOperation(const QString& BankName,
         {
             Bank_UnblockCard(BankName, ClientFIO, CardID);
         }
-        else if (command == "4")
+        else if (command == "0")
         {
             run = false;
         }
@@ -224,7 +224,7 @@ void Menu::SelectClientOperation()
             "выберите команду",
             "\t1 - посмотреть всех клиентов",
             "\t2 - выбрать клиента",
-            "\t3 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -235,7 +235,7 @@ void Menu::SelectClientOperation()
         {
             Client_ChooseClient();
         }
-        else if (command == "3")
+        else if (command == "0")
         {
             run = false;
         }
@@ -258,7 +258,7 @@ void Menu::Client_SelectChoosedClientOperation(const QString& ClientFIO)
             "\t3 - добавить карту",
             "\t4 - удалить карту",
             "\t5 - выбрать карту",
-            "\t6 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -281,7 +281,7 @@ void Menu::Client_SelectChoosedClientOperation(const QString& ClientFIO)
         {
             Client_ChooseCard(ClientFIO);
         }
-        else if (command == "6")
+        else if (command == "0")
         {
             run = false;
         }
@@ -305,7 +305,7 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
             "\t2 - использовать карту",
             "\t3 - заблокировать карту",
             "\t4 - разблокировать карту",
-            "\t5 - ВЫХОД"
+            "\t0 - ВЫХОД"
         });
         QString command = GetUserCommand();
         if (command == "1")
@@ -324,7 +324,7 @@ void Menu::Client_SelectChoosedCardOperation(const QString& BankName,
         {
             Bank_UnblockCard(BankName, ClientFIO, CardID);
         }
-        else if (command == "5")
+        else if (command == "0")
         {
             run = false;
         }
@@ -441,7 +441,9 @@ void Menu::Bank_RemoveClient(const QString& BankName)
     }
     size_t ClientIndex = SelectClient(Clients, "выберите клиента (порядковый номер)");
     if(ClientIndex >= Clients.size())
-        return
+    {
+        return;
+    }
     m_banks[BankName].RemoveClient(Clients[ClientIndex]);
 }
 
@@ -516,7 +518,7 @@ void Menu::Bank_GetBalance(const QString& BankName,
                            const QString& ClientFIO,
                            const size_t& CardID)
 {
-    m_out << m_banks[BankName].CheckCardBalance(ClientFIO, CardID);
+    m_out << m_banks[BankName].CheckCardBalance(ClientFIO, CardID) << endl;
 }
 
 void Menu::Bank_BlockCard(const QString& BankName,
@@ -573,20 +575,22 @@ void Menu::Client_ChooseClient()
 
 QList<QString> Menu::WhichBanksClient(const QString& ClientFIO)
 {
-    QList<QString> Client_of_Banks;
+    QList<QString> ClientsBanks;
+    QStringList AllBanks= m_banks.keys();
     QList<QString> BankClients;
-    foreach(Bank bank, m_banks)
+    foreach (QString BankName, AllBanks)
     {
-        BankClients = bank.GetClientInfo();
+        BankClients = m_banks[BankName].GetClientInfo();
         for(int i = 0; i < BankClients.size(); i++)
         {
             if(ClientFIO == BankClients[i])
             {
-                Client_of_Banks.push_back(m_banks.key(bank));
+                ClientsBanks.push_back(BankName);
+                break;
             }
         }
     }
-    return Client_of_Banks;
+    return ClientsBanks;
 }
 
 void Menu::Client_RemoveClient(const QString& ClientFIO)
@@ -753,7 +757,9 @@ void Menu::Client_UseCard(const QString& BankName,
                           const QString& ClientFIO,
                           const size_t& CardID)
 {
-    if(m_banks[BankName].GetClient(ClientFIO).IsCardBlocked(CardID))
+    Bank& bank = m_banks[BankName];
+    Client* clietn = bank.GetClient(ClientFIO);
+    if(clietn->IsCardBlocked(CardID))
     {
         m_out << "карта заблокирована. операция недоступна" << endl;
         return;
@@ -761,6 +767,6 @@ void Menu::Client_UseCard(const QString& BankName,
     m_out << "введите сумму (положитеное - добавить, отрицательное - снять" << endl;
     double value;
     m_in >> value;
-    m_banks[BankName].GetClient(ClientFIO).UseCard(CardID, value);
+    clietn->UseCard(CardID, value);
 }
 

@@ -15,7 +15,7 @@ public:
 
     void AddClient(const QString &fio);
     void RemoveClient(const QString &fio);
-    Client GetClient(const QString& fio);
+    Client* GetClient(const QString& fio);
     QList<QString> GetClientInfo();
     QList<size_t> GetAllClientCards(const QString &fio);
 

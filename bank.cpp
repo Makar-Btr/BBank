@@ -30,9 +30,9 @@ void Bank::RemoveClient(const QString &fio)
     }
 }
 
-Client Bank::GetClient(const QString& fio)
+Client* Bank::GetClient(const QString& fio)
 {
-    return m_clients[fio];
+    return &m_clients[fio];
 }
 
 QList<QString> Bank::GetClientInfo()

@@ -32,8 +32,6 @@ public:
     void BlockCard(const size_t& id);
     void UnblockCard(const size_t& id);
 
-    QList<size_t> GetCardsInfo();
-
 private:
     QString m_fio;
     QMap<size_t, Card*> m_cards;

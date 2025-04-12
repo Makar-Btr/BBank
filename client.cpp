@@ -77,9 +77,3 @@ void Client::UnblockCard(const size_t& id)
         m_cards[id]->UnBlock();
     }
 }
-
-
-QList<size_t> Client::GetCardsInfo()
-{
-    return m_cards.keys();
-}
